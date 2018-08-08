@@ -1,8 +1,5 @@
 package br.com.centrocar.location.models;
 
-import br.com.centrocar.location.exceptions.LocalVazioException;
-import br.com.centrocar.location.exceptions.TipoNaoInformadoException;
-
 /**
  * Aqui se encontra a estrutura e as regras de negócios de uma locação.
  * 
@@ -10,7 +7,7 @@ import br.com.centrocar.location.exceptions.TipoNaoInformadoException;
  * @see TipoLocacao
  */
 public class Locacao {
-	
+
 	private Integer id;
 	private String area;
 	private String rua;
@@ -20,39 +17,94 @@ public class Locacao {
 	private Double largura;
 	private Double profundidade;
 	private TipoLocacao tipo;
-	private String filial;
-	
-	@Deprecated
+
 	/**
 	 * Construtor depreciado; apenas para uso da persistência de dados e afins.
 	 */
-	public Locacao() { }
-	
+	@Deprecated
+	public Locacao() {
+	}
+
 	/**
-	 * Inicia a instância de uma {@link Locacao}, obrigatoriamente recebendo um {@link TipoLocacao}
-	 * e um local propriamente dito.
+	 * Inicia a instância de uma {@link Locacao}, obrigatoriamente recebendo um
+	 * local propriamente dito.
 	 * 
 	 * @param local
-	 * @param tipo
-	 * 			Tipo da locação.
 	 */
-	public Locacao(String local, TipoLocacao tipo) throws Exception {
-		
-//		if (this.local == null) {
-//			throw new LocalVazioException("É precioso informar um local!"); 
-//		} else if (this.tipo == null) {
-//			throw new TipoNaoInformadoException("Nem tipo de locação informado!");
-//		}
+	public Locacao(String local) throws Exception {
 		this.local = local;
-		this.tipo = tipo;
 	}
-	
+
 	public String getLocal() {
 		return local;
 	}
-	
+
+	public String getArea() {
+		return area;
+	}
+
+	public String getRua() {
+		return rua;
+	}
+
+	public String getPrateleira() {
+		return prateleira;
+	}
+
+	public Double getAltura() {
+		return altura;
+	}
+
+	public Double getLargura() {
+		return largura;
+	}
+
+	public Double getProfundidade() {
+		return profundidade;
+	}
+
+	public TipoLocacao getTipo() {
+		return tipo;
+	}
+
 	public void setLocal(String local) {
 		this.local = local;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public void setRua(String rua) {
+		this.rua = rua;
+	}
+
+	public void setPrateleira(String prateleira) {
+		this.prateleira = prateleira;
+	}
+
+	public void setAltura(Double altura) {
+		this.altura = altura;
+	}
+
+	public void setLargura(Double largura) {
+		this.largura = largura;
+	}
+
+	public void setProfundidade(Double profundidade) {
+		this.profundidade = profundidade;
+	}
+
+	public void setTipo(TipoLocacao tipoLocacaos) {
+		this.tipo = tipoLocacaos;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	@Override

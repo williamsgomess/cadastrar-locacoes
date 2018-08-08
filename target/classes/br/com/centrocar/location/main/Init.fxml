@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
@@ -7,49 +9,49 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.centrocar.location.controllers.InitController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#atualiza" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.centrocar.location.controllers.InitController">
    <children>
-      <AnchorPane layoutX="15.0" layoutY="-7.0" prefHeight="43.0" prefWidth="1366.0" style="-fx-background-color: #5384a7;" AnchorPane.bottomAnchor="732.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <JFXTextField fx:id="txLocal" alignment="CENTER" focusColor="#000000dc" labelFloat="true" layoutX="27.0" layoutY="66.0" onKeyPressed="#pulaCampo" prefHeight="49.0" prefWidth="199.0" promptText="Local" style="-fx-background-radius: 8px; -fx-background-color: #0000002f;" unFocusColor="TRANSPARENT">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="txPrateleira" alignment="CENTER" editable="false" focusColor="#000000dc" labelFloat="true" layoutX="237.0" layoutY="66.0" prefHeight="49.0" prefWidth="123.0" promptText="Prateleira" style="-fx-background-radius: 8px; -fx-background-color: #0000002f;" unFocusColor="TRANSPARENT">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="txRua" alignment="CENTER" editable="false" focusColor="#000000dc" labelFloat="true" layoutX="370.0" layoutY="66.0" prefHeight="49.0" prefWidth="97.0" promptText="Rua" style="-fx-background-radius: 8px; -fx-background-color: #0000002f;" unFocusColor="TRANSPARENT">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="txArea" alignment="CENTER" editable="false" focusColor="#000000dc" labelFloat="true" layoutX="476.0" layoutY="66.0" prefHeight="49.0" prefWidth="79.0" promptText="Área" style="-fx-background-radius: 8px; -fx-background-color: #0000002f;" unFocusColor="TRANSPARENT">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="txAltura" alignment="CENTER" focusColor="#000000dc" labelFloat="true" layoutX="568.0" layoutY="66.0" prefHeight="49.0" prefWidth="115.0" promptText="Altura" style="-fx-background-radius: 8px; -fx-background-color: #0000002f;" unFocusColor="TRANSPARENT">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="txLargura" alignment="CENTER" focusColor="#000000dc" labelFloat="true" layoutX="695.0" layoutY="66.0" prefHeight="49.0" prefWidth="115.0" promptText="Largura" style="-fx-background-radius: 8px; -fx-background-color: #0000002f;" unFocusColor="TRANSPARENT">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="txProfundidade" alignment="CENTER" focusColor="#000000dc" labelFloat="true" layoutX="823.0" layoutY="66.0" prefHeight="49.0" prefWidth="123.0" promptText="Profundidade" style="-fx-background-radius: 8px; -fx-background-color: #0000002f;" unFocusColor="TRANSPARENT">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </JFXTextField>
-      <JFXComboBox fx:id="cbTipo" focusColor="BLACK" layoutX="955.0" layoutY="66.0" prefHeight="49.0" prefWidth="236.0" style="-fx-background-color: #0000002f; -fx-background-radius: 8PX;" unFocusColor="#4d4d4d00" visibleRowCount="15" />
-      <JFXButton fx:id="btSalvar" layoutX="1203.0" layoutY="66.0" prefHeight="49.0" prefWidth="146.0" style="-fx-background-radius: 8PX; -fx-background-color: #267856;" text="SALVAR" textFill="WHITE">
-         <font>
-            <Font name="Arial Bold" size="18.0" />
-         </font>
-      </JFXButton>
+      <AnchorPane layoutX="12.0" layoutY="14.0" prefHeight="139.0" prefWidth="777.0" style="-fx-border-color: #aeabab; -fx-border-radius: 8PX;" AnchorPane.bottomAnchor="447.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <GridPane layoutX="10.0" layoutY="58.0" prefHeight="26.0" prefWidth="759.0" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="57.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.0" minWidth="10.0" prefWidth="92.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="0.0" prefWidth="76.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.0" minWidth="0.0" prefWidth="63.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="229.0" minWidth="0.0" prefWidth="56.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.0" minWidth="10.0" prefWidth="99.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="67.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="60.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="81.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="48.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="104.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                  <RowConstraints maxHeight="27.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <JFXTextField fx:id="txLocal" alignment="CENTER" focusColor="#000000dc" labelFloat="true" onKeyPressed="#pulaCampo" prefHeight="27.0" prefWidth="107.0" promptText="Local" style="-fx-background-radius: 8px; -fx-background-color: #0000002f; -fx-border-color: #000000; -fx-border-radius: 8px;" text="C2A.02.A.001" unFocusColor="TRANSPARENT" GridPane.rowIndex="4" />
+                  <JFXTextField fx:id="txPrateleira" alignment="CENTER" editable="false" focusColor="#000000dc" focusTraversable="false" labelFloat="true" prefHeight="27.0" prefWidth="80.0" promptText="Prateleira" style="-fx-background-radius: 8px; -fx-background-color: #0000002f; -fx-border-color: #000000; -fx-border-radius: 8px;" unFocusColor="TRANSPARENT" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <JFXTextField fx:id="txRua" alignment="CENTER" editable="false" focusColor="#000000dc" focusTraversable="false" labelFloat="true" prefHeight="27.0" prefWidth="92.0" promptText="Rua" style="-fx-background-radius: 8px; -fx-background-color: #0000002f; -fx-border-color: #000000; -fx-border-radius: 8px;" unFocusColor="TRANSPARENT" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                  <JFXTextField fx:id="txArea" alignment="CENTER" editable="false" focusColor="#000000dc" focusTraversable="false" labelFloat="true" prefHeight="27.0" prefWidth="73.0" promptText="Área" style="-fx-background-radius: 8px; -fx-background-color: #0000002f; -fx-border-color: #000000; -fx-border-radius: 8px;" unFocusColor="TRANSPARENT" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                  <JFXComboBox fx:id="cbTipo" focusColor="BLACK" labelFloat="true" prefHeight="27.0" prefWidth="103.0" promptText="Tipos" style="-fx-background-color: #0000002f; -fx-background-radius: 8PX; -fx-border-color: #000000; -fx-border-radius: 8px;" unFocusColor="#4d4d4d00" visibleRowCount="15" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                  <JFXTextField fx:id="txAltura" alignment="CENTER" focusColor="#000000dc" labelFloat="true" prefHeight="27.0" prefWidth="115.0" promptText="Altura" style="-fx-background-radius: 8px; -fx-background-color: #0000002f; -fx-border-color: #000000; -fx-border-radius: 8px;" text="0.0" unFocusColor="TRANSPARENT" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                  <JFXTextField fx:id="txLargura" alignment="CENTER" focusColor="#000000dc" labelFloat="true" prefHeight="27.0" prefWidth="115.0" promptText="Largura" style="-fx-background-radius: 8px; -fx-background-color: #0000002f; -fx-border-color: #000000; -fx-border-radius: 8px;" text="0.0" unFocusColor="TRANSPARENT" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                  <JFXTextField fx:id="txProfundidade" alignment="CENTER" focusColor="#000000de" labelFloat="true" prefHeight="27.0" prefWidth="115.0" promptText="Profundidade" style="-fx-background-radius: 8px; -fx-background-color: #0000002f; -fx-border-color: #000000; -fx-border-radius: 8px;" text="0.0" unFocusColor="TRANSPARENT" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+                  <JFXTextField fx:id="txQuantidade" alignment="CENTER" focusColor="#000000d9" focusTraversable="false" labelFloat="true" prefHeight="25.0" prefWidth="63.0" promptText="Qtd" style="-fx-background-color: #ffffff;" text="1" unFocusColor="#ffffff00" GridPane.columnIndex="8" GridPane.rowIndex="4" />
+                  <JFXButton fx:id="btSalvar" prefHeight="25.0" prefWidth="105.0" style="-fx-background-radius: 8PX; -fx-background-color: #267856;" text="SALVAR" textFill="WHITE" GridPane.columnIndex="9" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="Arial Bold" size="18.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </GridPane>
+            <JFXComboBox fx:id="cbAlmoxarifado" focusColor="BLACK" labelFloat="true" layoutX="337.0" layoutY="9.0" prefHeight="27.0" prefWidth="103.0" promptText="Almoxarifado" style="-fx-background-color: #0000002f; -fx-background-radius: 8PX; -fx-border-color: #000000; -fx-border-radius: 8px;" unFocusColor="#4d4d4d00" visibleRowCount="15" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

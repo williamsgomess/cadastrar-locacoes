@@ -7,7 +7,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -31,7 +30,7 @@ public class Main extends Application {
 	 * Inicia os componentes necessários para criar uma cena (view).
 	 * </br>
 	 * Busca o arquivo fxml responsável por conter a parte visual que aparecerá ao usuário no início da aplicação, 
-	 * logo após centraliza na tela e põe em tela cheia.
+	 * logo após centraliza a tela.
 	 * </br>
 	 * Será lançada uma {@code MainException} caso não encontre o arquivo .fxml.
 	 * @throws IOException 
@@ -43,8 +42,6 @@ public class Main extends Application {
 			AnchorPane pane = loader.load();
 			Scene scene = new Scene(pane);
 			stage.centerOnScreen();
-			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
-			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 			stage.setTitle("Cadastramento de Locações");
 			stage.setScene(scene);
 			stage.show();
