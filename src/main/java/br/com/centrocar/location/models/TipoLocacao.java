@@ -51,11 +51,16 @@ public enum TipoLocacao {
 	/**
 	 * Tipo de locação para palhetas.
 	 */
-	PALHETA(9);
+	PALHETA(9),
+	
+	/**
+	 * Sem tipo definido.
+	 */
+	SEM_TIPO(10);
 
 	private Integer tipo;
 
-	private TipoLocacao(Integer tipo) {
+	TipoLocacao(Integer tipo) {
 		this.tipo = tipo;
 	}
 
@@ -63,8 +68,10 @@ public enum TipoLocacao {
 		return this.tipo;
 	}
 	
-//	@Override
-//	public Integer toString() {
-//		return this.tipo;
-//	}
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+
+	
 }

@@ -1,6 +1,7 @@
 package br.com.centrocar.location.controllers;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -12,9 +13,12 @@ import br.com.centrocar.location.models.Almoxarifado;
 import br.com.centrocar.location.models.Locacao;
 import br.com.centrocar.location.models.TipoLocacao;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -44,6 +48,29 @@ public class InitController implements Initializable {
 	private JFXComboBox<Almoxarifado> cbAlmoxarifado;
 	@FXML
 	private JFXTextField txQuantidade;
+	@FXML
+	private TableView<Locacao> tbLocacoes;
+	@FXML
+	private TableColumn<Locacao, String> colRua;
+	@FXML
+	private TableColumn<Locacao, Double> colProfundidade;
+	@FXML
+	private TableColumn<Locacao, String> colArea;
+	@FXML
+	private TableColumn<Locacao, Double> colLargura;
+	@FXML
+	private TableColumn<Locacao, String> colPrateleira;
+	@FXML
+	private TableColumn<Locacao, Double> colAltura;
+	@FXML
+	private TableColumn<Locacao, Integer> colTipo;
+	@FXML
+	private TableColumn<Locacao, Integer> colId;
+	@FXML
+	private TableColumn<Locacao, String> colLocal;
+
+	private Locacao locacao;
+	private Integer id;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -53,16 +80,25 @@ public class InitController implements Initializable {
 
 		cbTipo.setItems(FXCollections.observableArrayList(TipoLocacao.values()));
 		cbAlmoxarifado.setItems(FXCollections.observableArrayList(Almoxarifado.values()));
+		
+		tbLocacoes.setOnMousePressed(event -> {
+			if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+				try {
+					initUpdate();
+					System.out.println(id);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 
 		btSalvar.setOnAction(event -> {
-
 			try {
-				Locacao locacao1 = new Locacao(txLocal.getText());
+				this.locacao = new Locacao(txLocal.getText());
 				Integer qtd = Integer.parseInt(txQuantidade.getText());
 				for (int i = 0; i < qtd; i++) {
-
-					adicionaLocalAutomatico(locacao1.getLocal(), i);
-
+					adicionaLocalAutomatico(locacao.getLocal(), i);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -72,62 +108,88 @@ public class InitController implements Initializable {
 
 	@FXML
 	void pulaCampo(KeyEvent event) {
-
 		try {
-
 			final KeyCombination TAB = new KeyCodeCombination(KeyCode.TAB);
 
 			if (TAB.match(event)) {
 				String filial = cbAlmoxarifado.getValue().toString();
+				this.locacao = new Locacao(txLocal.getText());
 				
-				Locacao locacao = new Locacao(txLocal.getText());
-				if (filial.equals(Almoxarifado.CENTROCAR_ESTOQUE.toString()) 
-						|| filial.equals(Almoxarifado.CENTROCAR_VITRINE.toString())) {
-					
-					separaLocalCentrocar(filial, locacao.getLocal());
-					System.out.println("C4");
-
-				}
-				if (filial.equals(Almoxarifado.CENTROSERVICE_ESTOQUE.toString())) {
-					separaLocalC2(filial, locacao.getLocal());
-					System.out.println("C2");
-				}
-
+				verificaAlmoxarifacoSelecionado(filial);
 			}
+
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-	
+
+	private void verificaAlmoxarifacoSelecionado(String filial) {
+		if (filial.equals(Almoxarifado.CENTROCAR_ESTOQUE.toString())
+				|| filial.equals(Almoxarifado.CENTROCAR_VITRINE.toString())) 
+			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
+
+		if (filial.equals(Almoxarifado.CENTROSERVICE_ESTOQUE.toString())) 
+			separaLocalMegaPecas(filial, locacao.getLocal());
+		
+		if (filial.equals(Almoxarifado.DISPNEU_ESTOQUE.toString())
+				|| filial.equals(Almoxarifado.DISPNEU_ESTOQUE.toString())) 
+			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
+		
+		if (filial.equals(Almoxarifado.MEGA_ESTOQUE.toString())
+				|| filial.equals(Almoxarifado.MEGA_VITRINE.toString())) 
+			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
+		
+		if (filial.equals(Almoxarifado.PNEUSTIL_ESTOQUE.toString())
+				|| filial.equals(Almoxarifado.PNEUSTIL_VITRINE.toString())) 
+			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
+		
+	}
+
 	@FXML
-    void atualiza(ActionEvent event) {
+	void atualiza(KeyEvent event) {
+		try {
+			final KeyCombination F5 = new KeyCodeCombination(KeyCode.F5);
+			if (F5.match(event)) initLocacoes();
 
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
+	private void initUpdate() {
+		locacao = tbLocacoes.getSelectionModel().getSelectedItem();
+		txAltura.setText(locacao.getAltura().toString());
+		txArea.setText(locacao.getArea());
+		txLargura.setText(locacao.getAltura().toString());
+		txLocal.setText(locacao.getLocal());
+		txPrateleira.setText(locacao.getPrateleira());
+		txProfundidade.setText(locacao.getProfundidade().toString());
+		txRua.setText(locacao.getRua());
+		cbTipo.setValue(locacao.getTipo());
+		this.id = locacao.getId();
+		
+	}
+
 	private void initLocacoes() throws Exception {
-		colNumeroMovimento.setCellValueFactory(new PropertyValueFactory<>("numeroDeOrdem"));
-		colDescricao.setCellValueFactory(new PropertyValueFactory<>("descricaoParceiro"));
-		colTotalLiquido.setCellValueFactory(new PropertyValueFactory<>("totalLiquido"));
-		colData.setCellValueFactory(new PropertyValueFactory<>("dataDeEntrada"));
-		tbListaDeNotasFiscais.setItems(listaNotasFiscais());
+		colAltura.setCellValueFactory(new PropertyValueFactory<>("altura"));
+		colArea.setCellValueFactory(new PropertyValueFactory<>("area"));
+		colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		colLargura.setCellValueFactory(new PropertyValueFactory<>("largura"));
+		colLocal.setCellValueFactory(new PropertyValueFactory<>("local"));
+		colPrateleira.setCellValueFactory(new PropertyValueFactory<>("prateleira"));
+		colProfundidade.setCellValueFactory(new PropertyValueFactory<>("profundidade"));
+		colRua.setCellValueFactory(new PropertyValueFactory<>("rua"));
+		colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+		tbLocacoes.setItems(listaLocacoes());
 	}
 
-	private ObservableList<NotaFiscal> listaNotasFiscais() throws Exception {
-		NotaFiscalDAO dao = new NotaFiscalDAO();
-		nota.setDataDeEntrada(dataPicker.getValue());
-		nota.setCodigoFilialContabil(txCodigoFilial.getText());
-		nota.setCodigoParceiro(txCodigoParceiro.getText());
-		nota.setDescricaoFilialContabil(txDescricaoFilial.getText());
-		nota.setDescricaoParceiro(txDescricaoParceiro.getText());
-		nota.setNumeroDeOrdem(txNumeroNotaFiscal.getText());
-
-		return FXCollections.observableArrayList(dao.listarNotas(nota));
+	private ObservableList<Locacao> listaLocacoes() throws Exception {
+		LocacaoDAO dao = new LocacaoDAO();
+		return FXCollections.observableArrayList(dao.buscaLocacoes());
 	}
 
-
-	private void separaLocalCentrocar(String filial, String local) {
+	private void separaLocalCentrocarCentroServicePneuStil(String filial, String local) {
 		String[] localSeparado = local.split("\\.");
 		String um = localSeparado[0];
 		String dois = localSeparado[1];
@@ -142,7 +204,7 @@ public class InitController implements Initializable {
 		this.txArea.setText(area);
 	}
 
-	private void separaLocalC2(String filial, String local) {
+	private void separaLocalMegaPecas(String filial, String local) {
 		String[] localSeparado = local.split("-");
 		String um = localSeparado[0];
 		String dois = localSeparado[1];
@@ -168,7 +230,11 @@ public class InitController implements Initializable {
 		String loc = um + "." + dois + "." + tres + "." + String.format("%03d", soma);
 
 		System.out.println(loc);
+		salvaLocacao(loc);
+		System.out.println("Gravado!");
+	}
 
+	private void salvaLocacao(String loc) throws Exception, SQLException {
 		Locacao locacao = new Locacao(loc);
 		locacao.setAltura(Double.parseDouble(txAltura.getText()));
 		locacao.setArea(txArea.getText());
@@ -178,9 +244,6 @@ public class InitController implements Initializable {
 		locacao.setRua(txRua.getText());
 		locacao.setTipo(cbTipo.getValue());
 		new LocacaoDAO().adiciona(locacao);
-		
-		System.out.println("Gravado!");
-
 	}
 
 }
