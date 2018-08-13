@@ -13,7 +13,6 @@ public class LocacaoDAOHelper {
 	public void pegaResultadoDaPesquisa(List<Locacao> locacoes, ResultSet rs) throws SQLException {
 		@SuppressWarnings("deprecation")
 		Locacao loc = new Locacao();
-		
 		loc.setId(rs.getInt("ID"));
 		loc.setAltura(rs.getDouble("ALTURA"));
 		loc.setArea(rs.getString("AREA"));
@@ -22,8 +21,9 @@ public class LocacaoDAOHelper {
 		loc.setPrateleira(rs.getString("PRATELEIRA"));
 		loc.setProfundidade(rs.getDouble("PROFUNDIDADE"));
 		loc.setRua(rs.getString("RUA"));
-		
-		getTipoLocacao(rs, loc); 
+		String tipo = rs.getString("TIPO");
+		getTipoLocacao(rs, loc, tipo);
+
 		
 		locacoes.add(loc);
 	}
@@ -36,29 +36,42 @@ public class LocacaoDAOHelper {
 		stmt.setDouble(5, locacao.getAltura());
 		stmt.setDouble(6, locacao.getLargura());
 		stmt.setDouble(7, locacao.getProfundidade());
-		stmt.setInt(8, locacao.getTipo().getTipo());
+		stmt.setString(8, locacao.getTipo().getTipo());
 	}
 
-	private void getTipoLocacao(ResultSet rs, Locacao loc) throws SQLException {
-		Integer tipo = rs.getInt("TIPO");
-		if (tipo == 1) {
+	private void getTipoLocacao(ResultSet rs, Locacao loc, String tipo) throws SQLException {
+		if (tipo.equals("PEQ")) {
 			loc.setTipo(TipoLocacao.PEQ);
-		} if (tipo == 2) {
+		} if (tipo.equals("MED")) {
 			loc.setTipo(TipoLocacao.MED);
-		} if (tipo == 3) {
+		} if (tipo.equals("GRD")) {
 			loc.setTipo(TipoLocacao.GRD);
-		}if (tipo == 4) {
+		}if (tipo.equals("PESADO")) {
 			loc.setTipo(TipoLocacao.PESADO);
-		} if (tipo == 5) {
+		} if (tipo.equals("LATARIA")) {
 			loc.setTipo(TipoLocacao.LATARIA);
-		}  if (tipo == 6) {
+		}  if (tipo.equals("RADIADOR")) {
 			loc.setTipo(TipoLocacao.RADIADOR);
-		}  if (tipo == 7) {
+		}  if (tipo.equals("ESCAPAMENTO")) {
 			loc.setTipo(TipoLocacao.ESCAPAMENTO);
-		}  if (tipo == 8) {
+		}  if (tipo.equals("PARA-CHOQUE")) {
 			loc.setTipo(TipoLocacao.PARA_CHOQUE);
-		} if (tipo == 9) {
+		} if (tipo.equals("PALHETA")) {
 			loc.setTipo(TipoLocacao.PALHETA);
 		}
+	}
+	
+	public void pegaDadosParaAtualizar(Locacao locacao, PreparedStatement stmt) throws SQLException {
+		stmt.setString(1, locacao.getArea());
+		stmt.setString(2, locacao.getRua());
+		stmt.setString(3, locacao.getPrateleira());
+		stmt.setString(4, locacao.getLocal());
+		stmt.setDouble(5, locacao.getAltura());
+		stmt.setDouble(6, locacao.getLargura());
+		stmt.setDouble(7, locacao.getProfundidade());
+		stmt.setString(8, locacao.getTipo().getTipo());
+		stmt.setInt(9, locacao.getId());
+		
+		stmt.execute();
 	}
 }

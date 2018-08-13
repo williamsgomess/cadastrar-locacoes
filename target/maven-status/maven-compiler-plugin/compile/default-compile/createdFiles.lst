@@ -1,0 +1,12 @@
+br\com\centrocar\location\config\ConnectionManager.class
+br\com\centrocar\location\config\ConnectionManagerImpl.class
+br\com\centrocar\location\exceptions\LocalVazioException.class
+br\com\centrocar\location\models\TipoLocacao.class
+br\com\centrocar\location\controllers\InitController.class
+br\com\centrocar\location\exceptions\TipoNaoInformadoException.class
+br\com\centrocar\location\models\Locacao.class
+br\com\centrocar\location\dao\LocacaoDAO.class
+br\com\centrocar\location\exceptions\MainException.class
+br\com\centrocar\location\dao\helpers\LocacaoDAOHelper.class
+br\com\centrocar\location\main\Main.class
+br\com\centrocar\location\models\Almoxarifado.class

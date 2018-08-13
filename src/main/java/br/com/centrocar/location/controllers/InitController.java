@@ -2,7 +2,10 @@ package br.com.centrocar.location.controllers;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import javax.swing.JOptionPane;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -63,14 +66,16 @@ public class InitController implements Initializable {
 	@FXML
 	private TableColumn<Locacao, Double> colAltura;
 	@FXML
-	private TableColumn<Locacao, Integer> colTipo;
+	private TableColumn<Locacao, String> colTipo;
 	@FXML
 	private TableColumn<Locacao, Integer> colId;
 	@FXML
 	private TableColumn<Locacao, String> colLocal;
+	@FXML
+	private TableColumn<Locacao, Boolean> selectedCol;
 
 	private Locacao locacao;
-	private Integer id;
+	private Integer id = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -80,25 +85,39 @@ public class InitController implements Initializable {
 
 		cbTipo.setItems(FXCollections.observableArrayList(TipoLocacao.values()));
 		cbAlmoxarifado.setItems(FXCollections.observableArrayList(Almoxarifado.values()));
-		
+
 		tbLocacoes.setOnMousePressed(event -> {
 			if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
 				try {
 					initUpdate();
-					System.out.println(id);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		});
-
+		
 		btSalvar.setOnAction(event -> {
 			try {
 				this.locacao = new Locacao(txLocal.getText());
-				Integer qtd = Integer.parseInt(txQuantidade.getText());
-				for (int i = 0; i < qtd; i++) {
-					adicionaLocalAutomatico(locacao.getLocal(), i);
+				if (this.id != null) {
+					gravaAlteracoesDaLocacao();
+					this.id = null;
+					resetaCampos();
+				} else {
+
+					if (jaExiste(locacao)) {
+						JOptionPane.showMessageDialog(null, "Locação " + locacao.getLocal() + " já cadastrada!",
+								"Alerta!", JOptionPane.WARNING_MESSAGE);
+					} else {
+						Integer qtd = Integer.parseInt(txQuantidade.getText());
+						Integer valor = 0;
+						for (int i = 0; i < qtd; i++) {
+							valor = adicionaLocalAutomatico(valor);
+						}
+						//resetaCampos();
+						JOptionPane.showMessageDialog(null, "Locação " + locacao.getLocal() + " salva com sucesso!",
+								"Cadastro realizado!", JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -110,54 +129,69 @@ public class InitController implements Initializable {
 	void pulaCampo(KeyEvent event) {
 		try {
 			final KeyCombination TAB = new KeyCodeCombination(KeyCode.TAB);
-
 			if (TAB.match(event)) {
+				desabilitaCampos(false);
 				String filial = cbAlmoxarifado.getValue().toString();
 				this.locacao = new Locacao(txLocal.getText());
-				
-				verificaAlmoxarifacoSelecionado(filial);
+				verificaAlmoxarifadoSelecionado(filial);
+				this.id = null;
 			}
-
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			JOptionPane.showMessageDialog(null, "Verifique se a filial está correta!", "Erro de formatação",
+					JOptionPane.WARNING_MESSAGE);
+			desabilitaCampos(true);
 
+		} finally {
+			desabilitaCampos(false);
+		}
 	}
 
-	private void verificaAlmoxarifacoSelecionado(String filial) {
-		if (filial.equals(Almoxarifado.CENTROCAR_ESTOQUE.toString())
-				|| filial.equals(Almoxarifado.CENTROCAR_VITRINE.toString())) 
-			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
-
-		if (filial.equals(Almoxarifado.CENTROSERVICE_ESTOQUE.toString())) 
-			separaLocalMegaPecas(filial, locacao.getLocal());
-		
-		if (filial.equals(Almoxarifado.DISPNEU_ESTOQUE.toString())
-				|| filial.equals(Almoxarifado.DISPNEU_ESTOQUE.toString())) 
-			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
-		
-		if (filial.equals(Almoxarifado.MEGA_ESTOQUE.toString())
-				|| filial.equals(Almoxarifado.MEGA_VITRINE.toString())) 
-			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
-		
-		if (filial.equals(Almoxarifado.PNEUSTIL_ESTOQUE.toString())
-				|| filial.equals(Almoxarifado.PNEUSTIL_VITRINE.toString())) 
-			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
-		
+	private void desabilitaCampos(boolean b) {
+		txPrateleira.setDisable(b);
+		txArea.setDisable(b);
+		txRua.setDisable(b);
+		txQuantidade.setDisable(b);
+		cbTipo.setDisable(b);
+		txLargura.setDisable(b);
+		txAltura.setDisable(b);
+		txProfundidade.setDisable(b);
+		btSalvar.setDisable(b);
 	}
 
 	@FXML
 	void atualiza(KeyEvent event) {
 		try {
 			final KeyCombination F5 = new KeyCodeCombination(KeyCode.F5);
-			if (F5.match(event)) initLocacoes();
-
+			if (F5.match(event)) {
+				initLocacoes();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private void initUpdate() {
+
+	private void verificaAlmoxarifadoSelecionado(String filial) {
+		if (filial.equals(Almoxarifado.CENTROCAR_ESTOQUE.toString())
+				|| filial.equals(Almoxarifado.CENTROCAR_VITRINE.toString()))
+			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
+
+		if (filial.equals(Almoxarifado.CENTROSERVICE_ESTOQUE.toString())
+				|| filial.equals(Almoxarifado.CENTROSERVICE_ESTOQUE.toString()))
+			separaLocalMegaPecas(filial, locacao.getLocal());
+
+		if (filial.equals(Almoxarifado.DISPNEU_ESTOQUE.toString())
+				|| filial.equals(Almoxarifado.DISPNEU_ESTOQUE.toString()))
+			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
+
+		if (filial.equals(Almoxarifado.MEGA_ESTOQUE.toString()) || filial.equals(Almoxarifado.MEGA_VITRINE.toString()))
+			separaLocalMegaPecas(filial, locacao.getLocal());
+
+		if (filial.equals(Almoxarifado.PNEUSTIL_ESTOQUE.toString())
+				|| filial.equals(Almoxarifado.PNEUSTIL_VITRINE.toString()))
+			separaLocalCentrocarCentroServicePneuStil(filial, locacao.getLocal());
+	}
+
+	private void initUpdate() throws SQLException {
 		locacao = tbLocacoes.getSelectionModel().getSelectedItem();
 		txAltura.setText(locacao.getAltura().toString());
 		txArea.setText(locacao.getArea());
@@ -168,7 +202,7 @@ public class InitController implements Initializable {
 		txRua.setText(locacao.getRua());
 		cbTipo.setValue(locacao.getTipo());
 		this.id = locacao.getId();
-		
+
 	}
 
 	private void initLocacoes() throws Exception {
@@ -190,6 +224,7 @@ public class InitController implements Initializable {
 	}
 
 	private void separaLocalCentrocarCentroServicePneuStil(String filial, String local) {
+
 		String[] localSeparado = local.split("\\.");
 		String um = localSeparado[0];
 		String dois = localSeparado[1];
@@ -202,6 +237,7 @@ public class InitController implements Initializable {
 		this.txPrateleira.setText(prateleira);
 		this.txRua.setText(rua);
 		this.txArea.setText(area);
+
 	}
 
 	private void separaLocalMegaPecas(String filial, String local) {
@@ -217,25 +253,27 @@ public class InitController implements Initializable {
 		this.txPrateleira.setText(prateleira);
 		this.txRua.setText(rua);
 		this.txArea.setText(area);
+
 	}
 
-	private void adicionaLocalAutomatico(String local, Integer qtd) throws Exception {
-		String[] localSeparado = local.split("\\.");
+	private Integer adicionaLocalAutomatico(Integer valor) throws Exception {
+		String[] localSeparado = locacao.getLocal().split("\\.");
 		String um = localSeparado[0];
 		String dois = localSeparado[1];
 		String tres = localSeparado[2];
 		Integer qt = Integer.parseInt(localSeparado[3]);
 
-		Integer soma = qt + qtd;
+		Integer soma = qt + valor;
 		String loc = um + "." + dois + "." + tres + "." + String.format("%03d", soma);
 
 		System.out.println(loc);
 		salvaLocacao(loc);
 		System.out.println("Gravado!");
+		valor = +1;
+		return valor;
 	}
 
 	private void salvaLocacao(String loc) throws Exception, SQLException {
-		Locacao locacao = new Locacao(loc);
 		locacao.setAltura(Double.parseDouble(txAltura.getText()));
 		locacao.setArea(txArea.getText());
 		locacao.setLargura(Double.parseDouble(txLargura.getText()));
@@ -243,7 +281,52 @@ public class InitController implements Initializable {
 		locacao.setProfundidade(Double.parseDouble(txProfundidade.getText()));
 		locacao.setRua(txRua.getText());
 		locacao.setTipo(cbTipo.getValue());
+		locacao.setLocal(loc);
+
 		new LocacaoDAO().adiciona(locacao);
+
+		initLocacoes();
 	}
 
+	private void gravaAlteracoesDaLocacao() throws Exception {
+		locacao.setAltura(Double.parseDouble(txAltura.getText()));
+		locacao.setArea(txArea.getText());
+		locacao.setLargura(Double.parseDouble(txLargura.getText()));
+		locacao.setPrateleira(txPrateleira.getText());
+		locacao.setProfundidade(Double.parseDouble(txProfundidade.getText()));
+		locacao.setRua(txRua.getText());
+		locacao.setTipo(cbTipo.getValue());
+		locacao.setLocal(txLocal.getText());
+		locacao.setId(this.id);
+
+		new LocacaoDAO().altera(locacao);
+
+		JOptionPane.showMessageDialog(null, "Locação " + locacao.getLocal() + " atualizada com sucesso!",
+				"Atualização bem sucedida!", JOptionPane.INFORMATION_MESSAGE);
+
+		initLocacoes();
+	}
+
+	private static boolean jaExiste(Locacao locacao) throws Exception {
+		List<Locacao> locacoes = new LocacaoDAO().buscaLocacoes();
+		if (locacoes.contains(locacao)) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	private void resetaCampos() {
+		txLocal.setText("");
+		txPrateleira.setText("");
+		txArea.setText("");
+		txRua.setText("");
+		txQuantidade.setText("1");
+		this.id = 0;
+		cbTipo.setValue(TipoLocacao.PEQ);
+		txLargura.setText("0.0");
+		txAltura.setText("0.0");
+		txProfundidade.setText("0.0");
+	}
 }

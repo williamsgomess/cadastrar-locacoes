@@ -11,60 +11,55 @@ public enum TipoLocacao {
 	/**
 	 * Tipo de locações para itens de dimensão pequena.
 	 */
-	PEQ(1),
+	PEQ("PEQ"),
 
 	/**
 	 * Tipo de locações para itens de dimensão média.
 	 */
-	MED(2),
+	MED("MED"),
 
 	/**
 	 * Tipo de locações para itens de dimensão grande.
 	 */
-	GRD(3),
+	GRD("GRD"),
 
 	/**
 	 * Tipo de locação para itens pesados.
 	 */
-	PESADO(4),
+	PESADO("PESADO"),
 
 	/**
 	 * Tipo de locação para latarias.
 	 */
-	LATARIA(5),
+	LATARIA("LATARIA"),
 
 	/**
 	 * Tipo de locação para radiadores.
 	 */
-	RADIADOR(6),
+	RADIADOR("RADIADOR"),
 
 	/**
 	 * Tipo de locação para escapamentos.
 	 */
-	ESCAPAMENTO(7),
+	ESCAPAMENTO("ESCAPAMENTO"),
 
 	/**
 	 * Tipo de locação para para-choques.
 	 */
-	PARA_CHOQUE(8),
+	PARA_CHOQUE("PARA-CHOQUE"),
 
 	/**
 	 * Tipo de locação para palhetas.
 	 */
-	PALHETA(9),
+	PALHETA("PALHETA");
 	
-	/**
-	 * Sem tipo definido.
-	 */
-	SEM_TIPO(10);
+	private String tipo;
 
-	private Integer tipo;
-
-	TipoLocacao(Integer tipo) {
+	TipoLocacao(String tipo) {
 		this.tipo = tipo;
 	}
 
-	public Integer getTipo() {
+	public String getTipo() {
 		return this.tipo;
 	}
 	
@@ -72,6 +67,5 @@ public enum TipoLocacao {
 	public String toString() {
 		return super.toString();
 	}
-
 	
 }

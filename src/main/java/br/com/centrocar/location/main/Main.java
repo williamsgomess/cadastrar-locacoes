@@ -2,7 +2,6 @@ package br.com.centrocar.location.main;
 
 import java.io.IOException;
 
-import br.com.centrocar.location.exceptions.MainException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,7 +20,7 @@ public class Main extends Application {
 	private static Stage stage;
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) {
 		Main.stage = stage;
 		inicia();
 	}
@@ -35,7 +34,7 @@ public class Main extends Application {
 	 * Será lançada uma {@code MainException} caso não encontre o arquivo .fxml.
 	 * @throws IOException 
 	 */
-	public void inicia() throws IOException {
+	public void inicia() {
 
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Init.fxml"));
@@ -45,8 +44,8 @@ public class Main extends Application {
 			stage.setTitle("Cadastramento de Locações");
 			stage.setScene(scene);
 			stage.show();
-		} catch (MainException e) {
-			throw new MainException("FXML referente a view não encontrado!");
+		} catch (IOException e) {
+			e.getMessage();
 		}
 		
 	}

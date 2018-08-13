@@ -6,7 +6,7 @@ package br.com.centrocar.location.models;
  * @author Williams Gomes
  * @see TipoLocacao
  */
-public class Locacao {
+public class Locacao implements Comparable<Locacao> {
 
 	private Integer id;
 	private String area;
@@ -17,6 +17,7 @@ public class Locacao {
 	private Double largura;
 	private Double profundidade;
 	private TipoLocacao tipo;
+	private Boolean select;
 
 	/**
 	 * Construtor depreciado; apenas para uso da persistência de dados e afins.
@@ -106,10 +107,20 @@ public class Locacao {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	public Boolean getSelect() {
+		return select;
+	}
+
+	public void setSelect(Boolean select) {
+		this.select = select;
+	}
 
 	@Override
 	public String toString() {
-		return "Locacao [id=" + id + ", local=" + local + ", tipo=" + tipo + "]";
+		return "Locacao [id=" + id + ", area=" + area + ", rua=" + rua + ", prateleira=" + prateleira + ", local="
+				+ local + ", altura=" + altura + ", largura=" + largura + ", profundidade=" + profundidade + ", tipo="
+				+ tipo + "]";
 	}
 
 	@Override
@@ -137,4 +148,8 @@ public class Locacao {
 		return true;
 	}
 
+	@Override
+	public int compareTo(Locacao outraLocacao) {
+		return this.local.compareToIgnoreCase(outraLocacao.getLocal());
+	}
 }
