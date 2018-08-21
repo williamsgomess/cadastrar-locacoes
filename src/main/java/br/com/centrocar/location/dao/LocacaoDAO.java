@@ -89,4 +89,24 @@ public class LocacaoDAO {
 			new LocacaoDAOHelper().pegaDadosParaAtualizar(locacao, stmt);
 		}
 	}
+	
+	public List<Locacao> buscaLocacoes(String local) throws Exception {
+		List<Locacao> locacoes = new ArrayList<>();
+        Connection conn = manager.open();
+
+        String sql = "SELECT * FROM LOCACAO WHERE ID IS NOT NULL";
+        
+        if (local != null && local.equals("") == false) {
+			sql += " AND LOCAL LIKE '" +local.trim()+ "%'";
+		}
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                	new LocacaoDAOHelper().pegaResultadoDaPesquisa(locacoes, rs);
+                }
+            }
+        }
+        return locacoes;
+    }
 }

@@ -17,7 +17,6 @@ public class Locacao implements Comparable<Locacao> {
 	private Double largura;
 	private Double profundidade;
 	private TipoLocacao tipo;
-	private Boolean select;
 
 	/**
 	 * Construtor depreciado; apenas para uso da persistência de dados e afins.
@@ -108,14 +107,6 @@ public class Locacao implements Comparable<Locacao> {
 		this.id = id;
 	}
 	
-	public Boolean getSelect() {
-		return select;
-	}
-
-	public void setSelect(Boolean select) {
-		this.select = select;
-	}
-
 	@Override
 	public String toString() {
 		return "Locacao [id=" + id + ", area=" + area + ", rua=" + rua + ", prateleira=" + prateleira + ", local="

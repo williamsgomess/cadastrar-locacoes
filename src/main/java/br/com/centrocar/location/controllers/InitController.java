@@ -52,6 +52,8 @@ public class InitController implements Initializable {
 	@FXML
 	private JFXTextField txQuantidade;
 	@FXML
+	private JFXTextField txPesquisa;
+	@FXML
 	private TableView<Locacao> tbLocacoes;
 	@FXML
 	private TableColumn<Locacao, String> colRua;
@@ -71,8 +73,6 @@ public class InitController implements Initializable {
 	private TableColumn<Locacao, Integer> colId;
 	@FXML
 	private TableColumn<Locacao, String> colLocal;
-	@FXML
-	private TableColumn<Locacao, Boolean> selectedCol;
 
 	private Locacao locacao;
 	private Integer id = null;
@@ -85,6 +85,8 @@ public class InitController implements Initializable {
 
 		cbTipo.setItems(FXCollections.observableArrayList(TipoLocacao.values()));
 		cbAlmoxarifado.setItems(FXCollections.observableArrayList(Almoxarifado.values()));
+		
+		
 
 		tbLocacoes.setOnMousePressed(event -> {
 			if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
@@ -95,31 +97,40 @@ public class InitController implements Initializable {
 				}
 			}
 		});
-		
+
 		btSalvar.setOnAction(event -> {
 			try {
-				this.locacao = new Locacao(txLocal.getText());
+				this.locacao = new Locacao(txLocal.getText().toUpperCase());
 				if (this.id != null) {
 					gravaAlteracoesDaLocacao();
 					this.id = null;
 					resetaCampos();
 				} else {
-
 					if (jaExiste(locacao)) {
-						JOptionPane.showMessageDialog(null, "Locação " + locacao.getLocal() + " já cadastrada!",
-								"Alerta!", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null,
+								"Locação " + locacao.getLocal().toUpperCase() + " já cadastrada!", "Alerta!",
+								JOptionPane.WARNING_MESSAGE);
 					} else {
 						Integer qtd = Integer.parseInt(txQuantidade.getText());
 						Integer valor = 0;
 						for (int i = 0; i < qtd; i++) {
 							valor = adicionaLocalAutomatico(valor);
 						}
-						//resetaCampos();
+						// resetaCampos();
 						JOptionPane.showMessageDialog(null, "Locação " + locacao.getLocal() + " salva com sucesso!",
 								"Cadastro realizado!", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
+		txPesquisa.setOnKeyReleased(event -> {
+			try {
+				initLocacoes();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -220,7 +231,7 @@ public class InitController implements Initializable {
 
 	private ObservableList<Locacao> listaLocacoes() throws Exception {
 		LocacaoDAO dao = new LocacaoDAO();
-		return FXCollections.observableArrayList(dao.buscaLocacoes());
+		return FXCollections.observableArrayList(dao.buscaLocacoes(txPesquisa.getText()));
 	}
 
 	private void separaLocalCentrocarCentroServicePneuStil(String filial, String local) {
@@ -234,9 +245,9 @@ public class InitController implements Initializable {
 		String rua = um + "." + dois;
 		String area = um;
 
-		this.txPrateleira.setText(prateleira);
-		this.txRua.setText(rua);
-		this.txArea.setText(area);
+		this.txPrateleira.setText(prateleira.toUpperCase());
+		this.txRua.setText(rua.toUpperCase());
+		this.txArea.setText(area.toUpperCase());
 
 	}
 
@@ -250,9 +261,9 @@ public class InitController implements Initializable {
 		String rua = um + "-" + dois;
 		String area = um;
 
-		this.txPrateleira.setText(prateleira);
-		this.txRua.setText(rua);
-		this.txArea.setText(area);
+		this.txPrateleira.setText(prateleira.toUpperCase());
+		this.txRua.setText(rua.toUpperCase());
+		this.txArea.setText(area.toUpperCase());
 
 	}
 
@@ -275,13 +286,13 @@ public class InitController implements Initializable {
 
 	private void salvaLocacao(String loc) throws Exception, SQLException {
 		locacao.setAltura(Double.parseDouble(txAltura.getText()));
-		locacao.setArea(txArea.getText());
+		locacao.setArea(txArea.getText().toUpperCase());
 		locacao.setLargura(Double.parseDouble(txLargura.getText()));
-		locacao.setPrateleira(txPrateleira.getText());
+		locacao.setPrateleira(txPrateleira.getText().toUpperCase());
 		locacao.setProfundidade(Double.parseDouble(txProfundidade.getText()));
-		locacao.setRua(txRua.getText());
+		locacao.setRua(txRua.getText().toUpperCase());
 		locacao.setTipo(cbTipo.getValue());
-		locacao.setLocal(loc);
+		locacao.setLocal(loc.toUpperCase());
 
 		new LocacaoDAO().adiciona(locacao);
 
@@ -290,13 +301,13 @@ public class InitController implements Initializable {
 
 	private void gravaAlteracoesDaLocacao() throws Exception {
 		locacao.setAltura(Double.parseDouble(txAltura.getText()));
-		locacao.setArea(txArea.getText());
+		locacao.setArea(txArea.getText().toUpperCase());
 		locacao.setLargura(Double.parseDouble(txLargura.getText()));
-		locacao.setPrateleira(txPrateleira.getText());
+		locacao.setPrateleira(txPrateleira.getText().toUpperCase());
 		locacao.setProfundidade(Double.parseDouble(txProfundidade.getText()));
-		locacao.setRua(txRua.getText());
+		locacao.setRua(txRua.getText().toUpperCase());
 		locacao.setTipo(cbTipo.getValue());
-		locacao.setLocal(txLocal.getText());
+		locacao.setLocal(txLocal.getText().toUpperCase());
 		locacao.setId(this.id);
 
 		new LocacaoDAO().altera(locacao);
@@ -310,8 +321,10 @@ public class InitController implements Initializable {
 	private static boolean jaExiste(Locacao locacao) throws Exception {
 		List<Locacao> locacoes = new LocacaoDAO().buscaLocacoes();
 		if (locacoes.contains(locacao)) {
+			System.out.println("Já Existe");
 			return true;
 		} else {
+			System.out.println("Não Existe");
 			return false;
 		}
 
