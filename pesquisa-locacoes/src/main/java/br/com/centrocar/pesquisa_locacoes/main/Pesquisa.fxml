@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="571.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.centrocar.pesquisa_locacoes.controllers.PesquisaController">
+   <children>
+      <JFXButton fx:id="btPesquisar" focusTraversable="false" layoutX="682.0" layoutY="5.0" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #000;" text="PESQUISAR" textFill="WHITE" AnchorPane.rightAnchor="6.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXTextField fx:id="txPesquisa" focusColor="BLACK" layoutX="524.0" layoutY="8.0" prefHeight="25.0" prefWidth="147.0" AnchorPane.rightAnchor="109.0" />
+      <TableView fx:id="tvLocacoes" focusTraversable="false" layoutX="3.0" layoutY="43.0" prefHeight="525.0" prefWidth="774.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="43.0">
+         <columns>
+            <TableColumn fx:id="colID" prefWidth="69.0" text="ID" />
+            <TableColumn fx:id="colArea" prefWidth="54.0" text="ÁREA" />
+            <TableColumn fx:id="colRua" prefWidth="66.0" text="RUA" />
+            <TableColumn fx:id="colPrateleira" prefWidth="78.0" text="PRATELEIRA" />
+            <TableColumn fx:id="colLocal" prefWidth="124.0" text="LOCAL" />
+            <TableColumn fx:id="colTipo" prefWidth="137.0" text="TIPO" />
+            <TableColumn minWidth="20.0" prefWidth="245.0" text="DIMENSÕES">
+               <columns>
+                  <TableColumn fx:id="colAltura" prefWidth="53.0" text="ALTURA" />
+                  <TableColumn fx:id="colLargura" prefWidth="65.0" text="LARGURA" />
+                  <TableColumn fx:id="colProfundidade" prefWidth="127.0" text="PROFUNDIDADE" />
+               </columns>
+            </TableColumn>
+         </columns>
+      </TableView>
+      <JFXTextField fx:id="txTipo" focusColor="BLACK" layoutX="359.0" layoutY="8.0" prefHeight="25.0" prefWidth="147.0" />
+   </children>
+</AnchorPane>
