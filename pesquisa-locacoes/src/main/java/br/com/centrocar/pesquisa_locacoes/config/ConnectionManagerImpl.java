@@ -11,7 +11,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	private final String user;
 	private final String pass;
 	
-	public ConnectionManagerImpl() {
+	public ConnectionManagerImpl() { 
 		ResourceBundle bundle = ResourceBundle.getBundle("br.com.centrocar.pesquisa_locacoes.util.db");
 		url = bundle.getString("url");
 		user = bundle.getString("user");
@@ -33,8 +33,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
 	@Override
 	public void close(java.sql.Connection conn) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		conn.close();
 	}
 
 }

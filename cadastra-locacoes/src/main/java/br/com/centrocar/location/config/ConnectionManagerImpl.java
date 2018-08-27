@@ -1,5 +1,6 @@
 package br.com.centrocar.location.config;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -27,14 +28,13 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	}
 
 	@Override
-	public java.sql.Connection open() throws SQLException {
+	public Connection open() throws SQLException {
 		return DriverManager.getConnection(url, user, pass);
 	}
 
 	@Override
-	public void close(java.sql.Connection conn) throws SQLException {
-		// TODO Auto-generated method stub
-		
+	public void close(Connection conn) throws SQLException {
+		conn.close();
 	}
 
 }

@@ -53,7 +53,6 @@ public class PesquisaController implements Initializable {
 				initLocacoes();
 				//cbTipo.setValue(null);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -62,7 +61,6 @@ public class PesquisaController implements Initializable {
 			try {
 				initLocacoes();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -71,7 +69,6 @@ public class PesquisaController implements Initializable {
 			try {
 				initLocacoes();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -80,9 +77,9 @@ public class PesquisaController implements Initializable {
 
 	private void initLocacoes() throws Exception {
 		colAltura.setCellValueFactory(new PropertyValueFactory<>("altura"));
-		colArea.setCellValueFactory(new PropertyValueFactory<>("area"));
-		colID.setCellValueFactory(new PropertyValueFactory<>("id"));
-		colLargura.setCellValueFactory(new PropertyValueFactory<>("largura"));
+		colArea.setCellValueFactory(new PropertyValueFactory<>("area")); 
+		colID.setCellValueFactory(new PropertyValueFactory<>("id")); 
+		colLargura.setCellValueFactory(new PropertyValueFactory<>("largura")); 
 		colLocal.setCellValueFactory(new PropertyValueFactory<>("local"));
 		colPrateleira.setCellValueFactory(new PropertyValueFactory<>("prateleira"));
 		colProfundidade.setCellValueFactory(new PropertyValueFactory<>("profundidade"));
